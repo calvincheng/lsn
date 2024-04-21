@@ -1,8 +1,3 @@
-// NOTE: Replace `false` with Shortcut's base64-encoded clipboard data!
-const DATA = false;
-const TEST_DATA =
-  "Q29tcGV0aXRpb24gU3F1YXQKCgoKCgoxCjMKCjk1Cjk1CjYtNi41CjEKNQo1Cgo5MAo1LTUuNQoxCjUKNQoKOTAKNS01LjUKCgoKCgoKCgoKCgoKCgoKCgoKQ29tcGV0aXRpb24gQmVuY2gKCgoKCgoxCjYKNgoKNjUKPDUtNQoxCjYKNgoKNjcuNQo1LTUuNQoxCjYKNgoKNzAKNgo=";
-
 // Number of rows per exercise on the spreadsheet
 const ROWS_PER_EXERCISE = 7;
 // Number of columns selected when copying from spreadsheet
