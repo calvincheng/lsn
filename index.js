@@ -130,11 +130,12 @@ function formatExercise(exercise) {
  */
 function formatSet(set, numSets) {
   const { actualWeight, numReps, lowerActualRPE, upperActualRPE } = set;
+  const formattedWeight = actualWeight ?? "???";
   const formattedRPE =
     lowerActualRPE === upperActualRPE
       ? `${lowerActualRPE || "<5"}`
       : `${lowerActualRPE || "<5"}-${upperActualRPE}`;
-  return `${actualWeight}kg ${numSets}x${numReps} @ ${formattedRPE}`;
+  return `${formattedWeight}kg ${numSets}x${numReps} @ ${formattedRPE}`;
 }
 
 /**
