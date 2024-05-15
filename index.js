@@ -19,13 +19,18 @@ function partition(arr, size) {
 }
 
 /**
- * Parses the 'data' parameter from the URL query string and decodes it from base64.
- * @returns {string} The decoded data.
+ * Parses the `data` and `date` parameters from the URL query string.
+ * Note that `data` is assumed to be provided in base64 encoding.
+ * @returns {Object} An Object containing the decoded data and a Date object.
  */
 function parseRequest() {
   const params = new URLSearchParams(document.location.search);
   const data = params.get("data");
-  return atob(data);
+  const timestamp = parseInt(params.get("date")) || Date.now();
+  return {
+    data: atob(data),
+    date: new Date(timestamp),
+  };
 }
 
 /**
@@ -154,14 +159,18 @@ function coalesce(setA, setB) {
 
 /**
  * Formats workout data into a structured format suitable for display or further processing.
- * @param {string} data - The raw workout data to be formatted.
+ * @param {Array} exercises - The list of exercises to be formatted.
+ * @param {number} date - An optional Date object indicating the time upon which
+ *     the workout was completed. If not provided, the current date is used.
  * @returns {string} The formatted workout data.
  */
-function formatWorkout(exercises) {
+function formatWorkout(exercises, date = null) {
   const formattedExercises = exercises
     .map(formatExercise)
     .map((exerciseStr) => `${exerciseStr}\n`);
-  const formattedWorkout = [yyyymmdd(), "", ...formattedExercises].join("\n");
+  const formattedWorkout = [yyyymmdd(date), "", ...formattedExercises].join(
+    "\n"
+  );
   return postprocess(formattedWorkout);
 }
 
@@ -196,12 +205,12 @@ function postprocess(output) {
 }
 
 function main() {
-  const data = parseRequest();
+  const { data, date } = parseRequest();
   const rows = parseDataToRows(data);
   const exercises = partition(rows, ROWS_PER_EXERCISE)
     .map(parseRowsToExercise)
     .sort(deadliftFirst);
-  const workout = formatWorkout(exercises);
+  const workout = formatWorkout(exercises, date);
   const html = workout.replace(/\n/g, "<br/>");
   document.write(html);
 }
