@@ -72,9 +72,8 @@ function parseDetailRow(detailRow) {
   const rpe = parseFloat(_rpe) || null;
   const weight = parseFloat(_weight) || null;
   const actualWeight = parseFloat(_actualWeight) || null;
-  const [lowerActualRPE = 0, upperActualRPE = lowerActualRPE] = _actualRPE
-    .split("-")
-    .map(parseFloat);
+  const lowerActualRPE = parseFloat(_actualRPE.split("-")[0]) || 0;
+  const upperActualRPE = parseFloat(_actualRPE.split("-")[1]) || lowerActualRPE;
 
   const sets = [];
   for (let i = 0; i < numSets; i++) {
