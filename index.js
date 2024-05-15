@@ -175,6 +175,17 @@ function yyyymmdd(date = null) {
 }
 
 /**
+ * A sorting function that puts deadlifts at the top.
+ * (I typically do deadlifts before bench, against the typical "SBD" order.)
+ * @param {exercise} exerciseA - The first exercise to compare aaginst.
+ * @param {exercise} exerciseB - The other exercise to compare against (unused).
+ * @returns {string} The sorted exercises.
+ */
+function deadliftFirst(exerciseA, _) {
+  return exerciseA.name.includes("Deadlift") ? -1 : 1;
+}
+
+/**
  * Postprocesses the output.
  * (Here I apply styling by lowercasing and shortening 'competition' to 'comp').
  * @param {string} output - The output to be postprocessed.
@@ -187,7 +198,9 @@ function postprocess(output) {
 function main() {
   const data = parseRequest();
   const rows = parseDataToRows(data);
-  const exercises = partition(rows, ROWS_PER_EXERCISE).map(parseRowsToExercise);
+  const exercises = partition(rows, ROWS_PER_EXERCISE)
+    .map(parseRowsToExercise)
+    .sort(deadliftFirst);
   const workout = formatWorkout(exercises);
   const html = workout.replace(/\n/g, "<br/>");
   document.write(html);
